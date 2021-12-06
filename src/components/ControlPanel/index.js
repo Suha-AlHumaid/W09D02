@@ -3,11 +3,15 @@ import React, { useState ,useEffect} from "react";
 import axios from "axios";
 import "./style.css";
 import User from "../User";
-const ControlPanel = ({token}) => {
+const ControlPanel = () => {
 
     const [users, setUsers] = useState([]);
     // const [user, setuser] = useState([]);
-  
+    const state= useSelector((state)=>{
+      return{
+       reducerLog: state.reducerLog
+      }
+    })
     useEffect(() => {
       getUsers();
     }, []);
@@ -17,7 +21,7 @@ const ControlPanel = ({token}) => {
           `${process.env.REACT_APP_BASE_URL}/all`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${state.reducerLog.token}`,
             },
           }
         );

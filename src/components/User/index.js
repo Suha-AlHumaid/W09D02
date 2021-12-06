@@ -1,17 +1,23 @@
 import axios from "axios";
 import React, { useState } from "react";
-
+import {useSelector} from "react-redux";
 import "./style.css";
-const User = ({ elem, getUsers, token }) => {
+const User = ({ elem, getUsers }) => {
   const [tasks, setTasks] = useState([]);
   const [bool, setBool] = useState(false);
+  const state= useSelector((state)=>{
+    return{
+     reducerLog: state.reducerLog
+    }
+  })
+
   const deletUser = async () => {
     try {
       const result = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/user/${elem._id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.reducerLog.token}`,
           },
         }
       );
@@ -31,7 +37,7 @@ const User = ({ elem, getUsers, token }) => {
         `${process.env.REACT_APP_BASE_URL}/tasksByAdmin/${elem._id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.reducerLog.token}`,
           },
         }
       );

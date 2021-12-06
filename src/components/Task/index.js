@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import {useSelector} from "react-redux";
 import "./style.css";
-const Task = ({ elem, token, getTasks }) => {
+
+const Task = ({ elem, getTasks }) => {
   const [editor, setEditor] = useState(false);
   const [task, setTask] = useState("");
+  const state= useSelector((state)=>{
+    return{
+     reducerLog: state.reducerLog
+    }
+  })
   const deleteTask = async () => {
     try {
       const result = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/task/${elem._id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.reducerLog.token}`,
           },
         }
       );
@@ -34,7 +41,7 @@ const Task = ({ elem, token, getTasks }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.reducerLog.token}`,
           },
         }
       );

@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch ,useSelector} from "react-redux";
+
 import axios from "axios";
 import Task from "../Task";
 import "./style.css";
 import Home from "../Home";
 
-const Tasks = ({ token, setToken ,admin}) => {
+const Tasks = ({admin}) => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState([]);
-
+ const dispatch = useDispatch();
+ const state= useSelector((state)=>{
+   return{
+    reducerLog: state.reducerLog
+   }
+ })
   useEffect(() => {
     getTasks();
   }, []);
@@ -17,7 +24,7 @@ const Tasks = ({ token, setToken ,admin}) => {
         `${process.env.REACT_APP_BASE_URL}/tasks`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.reducerLog.token}`,
           },
         }
       );
@@ -36,7 +43,7 @@ const Tasks = ({ token, setToken ,admin}) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.reducerLog.token}`,
           },
         }
       );
@@ -50,12 +57,13 @@ const Tasks = ({ token, setToken ,admin}) => {
     }
   };
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken("");
+    // localStorage.removeItem("token");
+    // setToken("");
     
+    dispatch(logout1({user:null, token:""}))
   };
   return (
-    !admin && token?
+    !admin && state.reducerLog.token?
   
     <div className="home">
       <h1>Todos List</h1>

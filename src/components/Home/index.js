@@ -4,28 +4,35 @@ import Login from "../Login";
 import Tasks from "../Tasks";
 import "./style.css";
 import ControlPanel from "../ControlPanel";
+import {useSelector} from "react-redux";
 const Home = () => {
-  const [token, setToken] = useState("");
+
   const [admin, setAdmin] = useState(false);
+
+  const state= useSelector((state)=>{
+    return{
+     reducerLog: state.reducerLog
+    }
+  })
   useEffect(() => {
-    const token1 = localStorage.getItem("token");
+
     const admin1 = localStorage.getItem("admin");
-    setToken(token1);
+
     setAdmin(admin1);
   }, []);
   return (
     <>
-      {!token? (
+      {!state.reducerLog.token? (
          
         <div className="home">
-          <Login setToken={setToken} setAdmin={setAdmin} token={token}/>
+          <Login setAdmin={setAdmin}/>
           <Register />
         </div>
       ) : (
           !admin ?
-      <Tasks token={token} setToken={setToken} admin={admin}/>
+      <Tasks admin={admin}/>
       :
-      <ControlPanel token={token} setToken={setToken} admin={admin}/>
+      <ControlPanel admin={admin}/>
       )}
     </>
   );

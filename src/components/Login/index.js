@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
-import Tasks from "../Tasks";
+import axios from "axios";;
 import "./style.css";
-import Task from "../Task";
-const Login = ({ setToken , token ,setAdmin ,admin}) => {
+
+const Login = ({setAdmin ,admin}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 //   const [role, setRole] = useState("61a6552cb604baf56847ff91");
   const [message, setMessage] = useState("");
-
+  const dispatch = useDispatch();
+  
+  const state= useSelector((state)=>{
+    return{
+     reducerLog: state.reducerLog
+    }
+  })
   const login = async () => {
     setMessage("");
     try {
@@ -24,15 +29,17 @@ const Login = ({ setToken , token ,setAdmin ,admin}) => {
       if (result.data.token) {
   
         setMessage("Success");
-        localStorage.setItem("token", result.data.token);
-       
+        // localStorage.setItem("token", result.data.token);
+ 
+        dispatch(login1({user:result.data.result, token:result.data.token}))
         if(result.data.result.role === "61a6551bb604baf56847ff8f"){
             console.log("Admin");
             setToken(result.data.token);
             localStorage.setItem("admin", true);
             setAdmin(true)
         }else {
-            setToken(result.data.token);
+            // setToken(result.data.token);
+            dispatch(login1({user:result.data.result, token:result.data.token}))
             setAdmin(false)
         }
        

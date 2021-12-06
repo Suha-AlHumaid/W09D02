@@ -30,13 +30,13 @@ const reducerLog = (state = initialState, action) => {
 
 export default reducerLog;
 
-export const login =(data)=>{
+export const login1 =(data)=>{
     return {
         type: "LOGIN",
         payload :data
     }
 }
-export const logout =(data)=>{
+export const logout1 =(data)=>{
     return {
         type: "LOGOUT",
         payload :data
