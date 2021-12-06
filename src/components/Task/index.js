@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import "./style.css";
 
 const Task = ({ elem, getTasks }) => {
   const [editor, setEditor] = useState(false);
   const [task, setTask] = useState("");
-  const state= useSelector((state)=>{
-    return{
-     reducerLog: state.reducerLog
-    }
-  })
+  const state = useSelector((state) => {
+    return {
+      reducerLog: state.reducerLog,
+    };
+  });
   const deleteTask = async () => {
     try {
       const result = await axios.delete(
@@ -28,7 +28,6 @@ const Task = ({ elem, getTasks }) => {
       }
     } catch (error) {
       console.log(error);
-      // getTasks()
     }
   };
 
@@ -72,24 +71,24 @@ const Task = ({ elem, getTasks }) => {
         <div className="task">
           <h2>{elem.task}</h2>{" "}
           <div className="flex">
-          <span
-            className="icon"
-            onClick={(e) => {
-              e.preventDefault();
-              deleteTask();
-            }}
-          >
-            X
-          </span>
-          <span
-            className="icon"
-            onClick={(e) => {
-              e.preventDefault();
-              setEditor(true);
-            }}
-          >
-            Edit
-          </span>
+            <span
+              className="icon"
+              onClick={(e) => {
+                e.preventDefault();
+                deleteTask();
+              }}
+            >
+              X
+            </span>
+            <span
+              className="icon"
+              onClick={(e) => {
+                e.preventDefault();
+                setEditor(true);
+              }}
+            >
+              Edit
+            </span>
           </div>
         </div>
       )}

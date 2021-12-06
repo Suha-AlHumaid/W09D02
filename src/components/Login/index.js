@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import axios from "axios";;
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { login1 } from "../../Reducers/login";
 import "./style.css";
-
-const Login = ({setAdmin ,admin}) => {
+const Login = ({ setAdmin, admin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-//   const [role, setRole] = useState("61a6552cb604baf56847ff91");
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
-  
-  const state= useSelector((state)=>{
-    return{
-     reducerLog: state.reducerLog
-    }
-  })
+
+  const state = useSelector((state) => {
+    return {
+      reducerLog: state.reducerLog,
+    };
+  });
+
   const login = async () => {
     setMessage("");
     try {
@@ -24,60 +25,54 @@ const Login = ({setAdmin ,admin}) => {
           password,
         }
       );
-      //   console.log(result.data.token);
-      //   console.log(result);
+
       if (result.data.token) {
-  
         setMessage("Success");
-        // localStorage.setItem("token", result.data.token);
- 
-        dispatch(login1({user:result.data.result, token:result.data.token}))
-        if(result.data.result.role === "61a6551bb604baf56847ff8f"){
-            console.log("Admin");
-            setToken(result.data.token);
-            localStorage.setItem("admin", true);
-            setAdmin(true)
-        }else {
-            // setToken(result.data.token);
-            dispatch(login1({user:result.data.result, token:result.data.token}))
-            setAdmin(false)
+
+        dispatch(
+          login1({ user: result.data.result, token: result.data.token })
+        );
+        if (result.data.result.role === "61a6551bb604baf56847ff8f") {
+          console.log("Admin");
+          dispatch(
+            login1({ user: result.data.result, token: result.data.token })
+          );
+          localStorage.setItem("admin", true);
+          setAdmin(true);
+        } else {
+          dispatch(
+            login1({ user: result.data.result, token: result.data.token })
+          );
+          setAdmin(false);
         }
-       
       }
     } catch (error) {
       console.log(error);
       setMessage("faild");
     }
   };
-  return ( <>
- 
-    
-    
-        <div className="home">
-      
-      <h1>LOGIN FORM</h1>
-      <input
-        type="email"
-        name="email"
-        className="form-input"
-        placeholder="Email here .."
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        name="password"
-        className="form-input"
-        placeholder="Pasword here .."
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={login}>Login</button>
-      {message ? message : ""}
-    </div>
+  return (
+    <>
+      <div className="home">
+        <h1>LOGIN FORM</h1>
+        <input
+          type="email"
+          name="email"
+          className="form-input"
+          placeholder="Email here .."
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          name="password"
+          className="form-input"
+          placeholder="Pasword here .."
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={login}>Login</button>
+        {message ? message : ""}
+      </div>
     </>
-    
-
- 
-
   );
 };
 

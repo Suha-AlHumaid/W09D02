@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch ,useSelector} from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../Reducers/login";
 import axios from "axios";
 import Task from "../Task";
 import "./style.css";
 import Home from "../Home";
 
-const Tasks = ({admin}) => {
+const Tasks = ({ admin }) => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState([]);
- const dispatch = useDispatch();
- const state= useSelector((state)=>{
-   return{
-    reducerLog: state.reducerLog
-   }
- })
+  const dispatch = useDispatch();
+  const state = useSelector((state) => {
+    return {
+      reducerLog: state.reducerLog,
+    };
+  });
+
   useEffect(() => {
     getTasks();
   }, []);
@@ -57,14 +58,9 @@ const Tasks = ({admin}) => {
     }
   };
   const logout = () => {
-    // localStorage.removeItem("token");
-    // setToken("");
-    
-    dispatch(logout1({user:null, token:""}))
+    dispatch(logOut({ user: null, token: "" }));
   };
-  return (
-    !admin && state.reducerLog.token?
-  
+  return !admin && state.reducerLog.token ? (
     <div className="home">
       <h1>Todos List</h1>
       <div>
@@ -79,12 +75,7 @@ const Tasks = ({admin}) => {
       {tasks.length !== 0 ? (
         <>
           {tasks.map((elem) => (
-            <Task
-              key={elem._id}
-              elem={elem}
-              token={token}
-              getTasks={getTasks}
-            />
+            <Task key={elem._id} elem={elem} getTasks={getTasks} />
           ))}
         </>
       ) : (
@@ -102,8 +93,8 @@ const Tasks = ({admin}) => {
         (logout)
       </span>
     </div>
-    :
-<Home />
+  ) : (
+    <Home />
   );
 };
 
