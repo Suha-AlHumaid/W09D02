@@ -11,6 +11,7 @@ const reducerLog = (state = initialState, action) => {
   // Reducers usually look at the type of action that happened
   // to decide how to update the state
   switch (type) {
+
     case "LOGIN":
       const { user, token } = payload;
       localStorage.setItem("token", token);
@@ -20,10 +21,13 @@ const reducerLog = (state = initialState, action) => {
       return { payload };
 
     default:
+      const storageToken = localStorage.getItem("token")
+      if(storageToken) return {token:storageToken}
       // If the reducer doesn't care about this action type,
       // return the existing state unchanged
       return state;
   }
+
 };
 
 export default reducerLog;
@@ -34,6 +38,7 @@ export const login1 = (data) => {
     payload: data,
   };
 };
+
 export const logOut = (data) => {
   return {
     type: "LOGOUT",

@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./style.css";
 import User from "../User";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../Reducers/login";
+import "./style.css";
+
 const ControlPanel = () => {
   const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
+
   const state = useSelector((state) => {
     return {
       reducerLog: state.reducerLog,
     };
   });
+
   useEffect(() => {
     getUsers();
   }, []);
+
   const getUsers = async () => {
     try {
       const result = await axios.get(`${process.env.REACT_APP_BASE_URL}/all`, {
@@ -30,6 +34,7 @@ const ControlPanel = () => {
   };
 
   const logout = () => {
+    localStorage.removeItem("admin");
     dispatch(logOut({ user: null, token: "" }));
   };
 

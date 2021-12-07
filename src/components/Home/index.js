@@ -5,21 +5,23 @@ import Tasks from "../Tasks";
 import ControlPanel from "../ControlPanel";
 import { useSelector } from "react-redux";
 import "./style.css";
+
 const Home = () => {
 
   const [admin, setAdmin] = useState(false);
   const state = useSelector((state) => {
     return {
       reducerLog: state.reducerLog,
+      reducerTasks: state.reducerTasks,
     };
   });
-  console.log(state.reducerLog);
+  console.log(state);
   useEffect(() => {
     const admin1 = localStorage.getItem("admin");
 
     setAdmin(admin1);
   }, []);
-  
+
   return (
     <>
       {!state.reducerLog.token ? (
@@ -34,6 +36,7 @@ const Home = () => {
       )}
     </>
   );
+
 };
 
 export default Home;

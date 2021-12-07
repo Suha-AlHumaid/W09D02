@@ -4,13 +4,16 @@ import { useSelector } from "react-redux";
 import "./style.css";
 
 const Task = ({ elem, getTasks }) => {
+
   const [editor, setEditor] = useState(false);
   const [task, setTask] = useState("");
+
   const state = useSelector((state) => {
     return {
       reducerLog: state.reducerLog,
     };
   });
+  
   const deleteTask = async () => {
     try {
       const result = await axios.delete(

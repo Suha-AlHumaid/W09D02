@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./style.css";
+
 const User = ({ elem, getUsers }) => {
   const [tasks, setTasks] = useState([]);
   const [bool, setBool] = useState(false);
+
   const state = useSelector((state) => {
     return {
       reducerLog: state.reducerLog,
@@ -21,7 +23,8 @@ const User = ({ elem, getUsers }) => {
           },
         }
       );
-      console.log(result);
+      // console.log(result);
+
       if (typeof result.data === "object") {
         console.log(typeof result.data);
         getUsers();
@@ -49,12 +52,12 @@ const User = ({ elem, getUsers }) => {
   };
 
   const deleteTask = async (task_id) => {
+    console.log(task_id);
+    console.log(elem._id);
+    console.log(state.reducerLog.token);
     try {
       const result = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/taskByAdmin/${elem._id}`,
-        {
-          task_id,
-        },
+        `${process.env.REACT_APP_BASE_URL}/taskByAdmin/${elem._id}?task_id=${task_id}`,
         {
           headers: {
             Authorization: `Bearer ${state.reducerLog.token}`,
@@ -70,6 +73,8 @@ const User = ({ elem, getUsers }) => {
       console.log(error);
     }
   };
+
+
   return (
     <div>
       {bool ? (
@@ -107,7 +112,7 @@ const User = ({ elem, getUsers }) => {
       ) : (
         <div className="task">
           <p>{elem.email}</p>
-          <div className="flex">
+          <div>
             <span
               className="icon"
               onClick={(e) => {
@@ -117,6 +122,7 @@ const User = ({ elem, getUsers }) => {
             >
               X
             </span>
+
             <span
               className="icon"
               onClick={(e) => {
@@ -131,7 +137,8 @@ const User = ({ elem, getUsers }) => {
         </div>
       )}
     </div>
-  );
+  )
+  
 };
 
 export default User;

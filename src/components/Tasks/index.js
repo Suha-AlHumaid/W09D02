@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../Reducers/login";
+import { allTasks } from "../../Reducers/tasks";
 import axios from "axios";
 import Task from "../Task";
-import "./style.css";
 import Home from "../Home";
+import "./style.css";
 
 const Tasks = ({ admin }) => {
+
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState([]);
+
   const dispatch = useDispatch();
+
   const state = useSelector((state) => {
     return {
       reducerLog: state.reducerLog,
+      reducerTasks: state.reducerTasks
     };
   });
 
+  console.log(state.reducerTasks);
   useEffect(() => {
     getTasks();
   }, []);
+
   const getTasks = async () => {
     try {
       const result = await axios.get(
@@ -29,7 +36,9 @@ const Tasks = ({ admin }) => {
           },
         }
       );
-      setTasks(result.data);
+      // setTasks(result.data);
+      console.log(result.data);
+      dispatch(allTasks(result.data))
     } catch (error) {
       console.log(error);
     }
@@ -57,9 +66,11 @@ const Tasks = ({ admin }) => {
       console.log(error);
     }
   };
+
   const logout = () => {
     dispatch(logOut({ user: null, token: "" }));
   };
+
   return !admin && state.reducerLog.token ? (
     <div className="home">
       <h1>Todos List</h1>
@@ -72,9 +83,10 @@ const Tasks = ({ admin }) => {
         />
         <button onClick={addTask}>ADD NEW</button>
       </div>
-      {tasks.length !== 0 ? (
+      {state.reducerTasks&& 
+      state.reducerTasks.length? (
         <>
-          {tasks.map((elem) => (
+          {state.reducerTasks.map((elem) => (
             <Task key={elem._id} elem={elem} getTasks={getTasks} />
           ))}
         </>

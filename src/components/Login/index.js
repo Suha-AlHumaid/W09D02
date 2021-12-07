@@ -3,10 +3,13 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login1 } from "../../Reducers/login";
 import "./style.css";
+
 const Login = ({ setAdmin, admin }) => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
   const dispatch = useDispatch();
 
   const state = useSelector((state) => {
@@ -46,11 +49,13 @@ const Login = ({ setAdmin, admin }) => {
           setAdmin(false);
         }
       }
+
     } catch (error) {
       console.log(error);
       setMessage("faild");
     }
   };
+
   return (
     <>
       <div className="home">
@@ -74,6 +79,7 @@ const Login = ({ setAdmin, admin }) => {
       </div>
     </>
   );
+  
 };
 
 export default Login;
